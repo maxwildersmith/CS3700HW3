@@ -18,7 +18,7 @@ public class SockMaker extends Thread{
         try {
             while (numOfSocksMade <= numOfSocksToMake) {
                 System.out.printf("%s: Produced %d of %d %ss\n",this.getName(),++numOfSocksMade,numOfSocksToMake,this.getName());
-                matcher.notify();
+                //matcher.notify();
                 sleep(delay);
             }
         } catch (InterruptedException e){
