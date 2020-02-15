@@ -1,8 +1,9 @@
 package Election;
 
 public class OfficialThread extends Thread {
-    private int rank;
+    private Official leader;
     private Thread rankThread;
+    private int rank;
 
     public OfficialThread(String name, Thread rankThread){
         setName(name);
@@ -12,7 +13,7 @@ public class OfficialThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println(getName()+": Rank: "+rank+" Guess for Leader: "+getName());
+        System.out.println(getName()+": Rank: "+rank+" Guess for Leader: "+leader);
         rankThread.interrupt();
     }
 }
