@@ -43,8 +43,8 @@ public class MatMult {
         pool.shutdown();
         try {
             latch.await();
-            System.out.printf("%d, %d\n",numOfThreads,(System.currentTimeMillis()-startTime));
-//            System.out.printf("Time with %d thread: %d ms\n",numOfThreads,(System.currentTimeMillis()-startTime));
+            //System.out.printf("%d, %d\n",numOfThreads,(System.currentTimeMillis()-startTime));
+            System.out.printf("Time with %d thread: %d ms\n",numOfThreads,(System.currentTimeMillis()-startTime));
         } catch (InterruptedException e) {
             System.out.println("Timed out");
             e.printStackTrace();

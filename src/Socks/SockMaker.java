@@ -1,14 +1,20 @@
 package Socks;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class SockMaker extends Thread{
     private Sock.SockColor color;
     private int numOfSocksToMake, numOfSocksMade, delay;
-    private Matcher matcher;
+    private BlockingQueue<Sock> matcher;
+    private CountDownLatch inc;
 
-    public SockMaker(Sock.SockColor color, int delay, Matcher sockMatcher){
+    public SockMaker(Sock.SockColor color, int maxDelay, BlockingQueue<Sock> sockMatcher, CountDownLatch latch){
         this.color = color;
-        this.delay = delay;
+        this.delay = maxDelay;
         this.setName(color+" Sock");
+        this.inc = latch;
         matcher = sockMatcher;
         numOfSocksToMake = (int)(Math.random()*100+1);
     }
@@ -16,13 +22,15 @@ public class SockMaker extends Thread{
     @Override
     public void run() {
         try {
-            while (numOfSocksMade <= numOfSocksToMake) {
+            while (numOfSocksMade < numOfSocksToMake) {
                 System.out.printf("%s: Produced %d of %d %ss\n",this.getName(),++numOfSocksMade,numOfSocksToMake,this.getName());
-                //matcher.notify();
-                sleep(delay);
+                matcher.put(new Sock(color));
+                sleep((int)(delay*Math.random()));
             }
+
         } catch (InterruptedException e){
             System.out.println(this.getName()+" was interrupted");
         }
+        inc.countDown();
     }
 }

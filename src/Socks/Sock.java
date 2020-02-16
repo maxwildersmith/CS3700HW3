@@ -7,4 +7,8 @@ public class Sock {
     public Sock(SockColor color){
         this.color = color;
     }
+
+    public SockColor getColor(){
+        return color;
+    }
 }

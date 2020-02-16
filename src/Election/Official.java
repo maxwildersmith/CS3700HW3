@@ -13,6 +13,14 @@ public class Official {
         return "";
     }
 
+    public int getRank(){
+        return rank;
+    }
+
+    public String getName(){
+        return name;
+    }
+
     @Override
     public String toString() {
         return name + "\'s rank is " + rank;

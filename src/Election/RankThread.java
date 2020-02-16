@@ -1,34 +1,39 @@
 package Election;
 
 public class RankThread extends Thread {
-    private int currentHighestRank;
-    private String currentLeader;
+    private volatile Official leader;
+    private int count, max;
 
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("Starting elected officials code...\n\n");
-        RankThread rankThread = new RankThread();
-        rankThread.start();
-        sleep(100);
-        new OfficialThread("Bobby", rankThread).start();
+    public RankThread(int numThreads){
+        leader = null;
+        max = numThreads;
     }
 
-    public RankThread(){
-        currentHighestRank = Integer.MIN_VALUE;
-        currentLeader = "";
+    public Official getLeader(){
+        return leader;
     }
 
     @Override
     public void run() {
-        waitForUpdate();
-    }
+        synchronized (this){
+                try {
+                    while(count<max) {
+                        wait();
+                    }
+                } catch (InterruptedException e) {
+                    leader = null;
+                    notifyAll();
+                }
+    }}
 
-    private synchronized void waitForUpdate(){
-        try {
-            while (true)
-                this.wait();
-        } catch (InterruptedException e) {
-            System.out.println("caught!");
+    public void newLeader(Official official){
+        count++;
+        if(leader==null||leader.getRank()<official.getRank()){
+            leader = official;
+            notifyAll();
         }
+        if(count>=max)
+            interrupt();
     }
 
 }
