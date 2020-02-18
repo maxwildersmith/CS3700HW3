@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  *      ms instead of s
  */
 public class MatMult {
-    private float[][] a,b,c;
+    private volatile float[][] a,b,c;
     private int m, n, p;
 
     public MatMult(float[][] a, float[][] b, float[][] c, int m, int n, int p) {
